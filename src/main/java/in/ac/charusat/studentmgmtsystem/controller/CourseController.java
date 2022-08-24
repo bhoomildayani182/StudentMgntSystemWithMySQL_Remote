@@ -1,7 +1,6 @@
 package in.ac.charusat.studentmgmtsystem.controller;
 
 import in.ac.charusat.studentmgmtsystem.model.Course;
-
 import in.ac.charusat.studentmgmtsystem.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
