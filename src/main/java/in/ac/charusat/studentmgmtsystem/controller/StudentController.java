@@ -28,7 +28,7 @@ public class StudentController {
     // Get the list of all student
 
     @GetMapping("/")
-    public String DisplayWecomeMessage(){
+    public String DisplayWelcomeMessage(){
         return "<h1>Welcome User</h1>";
     }
     @GetMapping("/listStudents")
