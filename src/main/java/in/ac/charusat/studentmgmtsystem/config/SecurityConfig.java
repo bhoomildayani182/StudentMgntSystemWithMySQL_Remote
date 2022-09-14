@@ -1,7 +1,11 @@
 package in.ac.charusat.studentmgmtsystem.config;
 
+import in.ac.charusat.studentmgmtsystem.service.UserService;
+import org.hibernate.jpa.internal.util.ConfigurationHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
 
+@Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    Go to right click and go to genrator to override methon and
@@ -19,20 +24,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     DataSource dataSource;
 
+    @Autowired
+    private UserService userService;
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource)
-                .withDefaultSchema()
-                .withUser(
-                        User.withUsername("admin")
-                                .password("admin")
-                                .roles("ADMIN")
-                )
-                .withUser(
-                        User.withUsername("user")
-                                .password("user")
-                                .roles("USER")
-                );
+        auth.userDetailsService(userService);
+//        auth.jdbcAuthentication().dataSource(dataSource)
+//                .withDefaultSchema()
+//                .withUser(
+//                        User.withUsername("admin")
+//                                .password("admin")
+//                                .roles("ADMIN")
+//                )
+//                .withUser(
+//                        User.withUsername("user")
+//                                .password("user")
+//                                .roles("USER")
+//                );
     //        auth.inMemoryAuthentication()
 //                .withUser("admin")
 //                .password("admin")
@@ -43,8 +51,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .roles("USER");
     }
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests().antMatchers("/user").permitAll();
         http.csrf().disable();
         http.headers().frameOptions().disable();
     }
@@ -56,5 +66,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 
-
-//complate project
